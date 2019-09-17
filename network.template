@@ -1,0 +1,219 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Vpc Stack with 2 public subnets in separate AZs",
+  "Metadata": {},
+  "Parameters": {
+    "TheVpcRange": {
+      "Type": "String"
+    },
+    "TheSubnetRange": {
+      "Type": "String"
+    },
+    "TheOtherSubnetRange": {
+      "Type": "String"
+    },
+    "ThePublicIp": {
+      "Type": "String"
+    }
+  },
+  "Mappings": {},
+  "Conditions": {},
+  "Resources": {
+    "TheVpc": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": {
+          "Ref": "TheVpcRange"
+        },
+        "EnableDnsHostnames": "True",
+        "EnableDnsSupport": "True",
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Fn::Sub": "${AWS::StackName}-VPC"
+            }
+          }
+        ]
+      }
+    },
+    "TheSubnet": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": {
+                "Ref": "AWS::Region"
+              }
+            }
+          ]
+        },
+        "CidrBlock": {
+          "Ref": "TheSubnetRange"
+        },
+        "MapPublicIpOnLaunch": "True",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Fn::Sub": "${AWS::StackName}-SUBNET"
+            }
+          }
+        ],
+        "VpcId": {
+          "Ref": "TheVpc"
+        }
+      }
+    },
+    "TheOtherSubnet": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": {
+                "Ref": "AWS::Region"
+              }
+            }
+          ]
+        },
+        "CidrBlock": {
+          "Ref": "TheOtherSubnetRange"
+        },
+        "MapPublicIpOnLaunch": "True",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Fn::Sub": "${AWS::StackName}-OTHERSUBNET"
+            }
+          }
+        ],
+        "VpcId": {
+          "Ref": "TheVpc"
+        }
+      }
+    },
+    "TheRouteTable": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "TheVpc"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Fn::Sub": "${AWS::StackName}-RouteTable"
+            }
+          }
+        ]
+      }
+    },
+    "TheSubnetRouteTableAssociation": {
+      "DependsOn": [
+        "TheRouteTable",
+        "TheSubnet"
+      ],
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "TheRouteTable"
+        },
+        "SubnetId": {
+          "Ref": "TheSubnet"
+        }
+      }
+    },
+    "TheOtherSubnetRouteTableAssociation": {
+      "DependsOn": [
+        "TheRouteTable",
+        "TheSubnet"
+      ],
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "TheRouteTable"
+        },
+        "SubnetId": {
+          "Ref": "TheOtherSubnet"
+        }
+      }
+    },
+    "TheGateway": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Fn::Sub": "${AWS::StackName}-InternetGateway"
+            }
+          }
+        ]
+      }
+    },
+    "TheInternetVpcAssociation": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "InternetGatewayId": {
+          "Ref": "TheGateway"
+        },
+        "VpcId": {
+          "Ref": "TheVpc"
+        }
+      }
+    },
+    "TheRoute": {
+      "DependsOn": [
+        "TheRouteTable",
+        "TheGateway"
+      ],
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": {
+          "Ref": "ThePublicIp"
+        },
+        "GatewayId": {
+          "Ref": "TheGateway"
+        },
+        "RouteTableId": {
+          "Ref": "TheRouteTable"
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "ThePublicIpWhite": {
+      "Description": "white listed public ip for access",
+      "Value": {
+        "Ref": "ThePublicIp"
+      },
+      "Export": {
+        "Name": "access-allowed-ips"
+      }
+    },
+    "SubnetId": {
+      "Description": "subnet to attach ec2 to",
+      "Value": {
+        "Ref": "TheSubnet"
+      }
+    },
+    "OtherSubnetId": {
+      "Description": "subnet to attach ec2 to",
+      "Value": {
+        "Ref": "TheOtherSubnet"
+      }
+    },
+    "VpcId": {
+      "Description": "vpc to attach security group to",
+      "Value": {
+        "Ref": "TheVpc"
+      }
+    }
+  }
+}
