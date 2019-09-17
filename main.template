@@ -1,0 +1,207 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "create all non-WAF resources for the Summit WAF session",
+  "Metadata": {
+    "AWS::CloudFormation::Interface": {
+      "ParameterGroups": [
+        {
+          "Label": {
+            "Default": "Setup: leave as defaults unless  you know what you're doing"
+          },
+          "Parameters": [
+            "TheAmi",
+            "TheVpcRange",
+            "TheSubnetRange",
+            "TheOtherSubnetRange",
+            "ThePublicIp"
+          ]
+        }
+      ],
+      "ParameterLabels": {
+        "TheAmi": {
+          "Description": "must be a linux2 ami"
+        },
+        "TheVpcRange": {
+          "Description": "vpc cidr block"
+        },
+        "TheSubnetRange": {
+          "Description": "subnet cidr block"
+        },
+        "TheOtherSubnetRange": {
+          "Description": "another subnet cidr block"
+        },
+        "ThePublicIp": {
+          "Description": "public ip to whitelist, your public ip nomrally"
+        }
+      }
+    }
+  },
+  "Parameters": {
+    "TheAmi": {
+      "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+      "Default": "/aws/service/ecs/optimized-ami/amazon-linux-2/recommended/image_id"
+    },
+    "ThePublicIp": {
+      "Description": "public ip to whitelist",
+      "Type": "String",
+      "Default": "0.0.0.0/0"
+    },
+    "TheVpcRange": {
+      "Description": "vpc CIDR range",
+      "Default": "10.0.0.0/26",
+      "Type": "String"
+    },
+    "TheSubnetRange": {
+      "Description": "subnet CIDR",
+      "Default": "10.0.0.16/28",
+      "Type": "String"
+    },
+    "TheOtherSubnetRange": {
+      "Description": "subnet CIDR",
+      "Default": "10.0.0.32/28",
+      "Type": "String"
+    },
+    "TheSubnetId": {
+      "Description": "for load balancer",
+      "Type": "String",
+      "Default": ""
+    },
+    "TheVpcId": {
+      "Description": "for load balancer",
+      "Type": "String",
+      "Default": ""
+    },
+    "TheOtherSubnetId": {
+      "Description": "for load balancer",
+      "Default": "",
+      "Type": "String"
+    },
+    "WebSecurityGroup": {
+      "Description": "output from security template",
+      "Type": "String",
+      "Default": ""
+    },
+    "ALBSecurityGroup": {
+      "Description": "output from security template",
+      "Type": "String",
+      "Default": ""
+    }
+  },
+  "Mappings": {},
+  "Conditions": {},
+  "Resources": {
+    "TheNeworkStack": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "Parameters": {
+          "TheVpcRange": {
+            "Ref": "TheVpcRange"
+          },
+          "TheSubnetRange": {
+            "Ref": "TheSubnetRange"
+          },
+          "TheOtherSubnetRange": {
+            "Ref": "TheOtherSubnetRange"
+          },
+          "ThePublicIp": {
+            "Ref": "ThePublicIp"
+          }
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Fn::Sub": "${AWS::StackName}-VPC"
+            }
+          }
+        ],
+        "TemplateURL": "./network.template",
+        "TimeoutInMinutes": 20
+      }
+    },
+    "TheSecurityStack": {
+      "DependsOn": [
+        "TheNeworkStack"
+      ],
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "Parameters": {
+          "ThePublicIp": {
+            "Ref": "ThePublicIp"
+          },
+          "TheVpcId": {
+            "Fn::GetAtt": [
+              "TheNeworkStack",
+              "Outputs.VpcId"
+            ]
+          }
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Fn::Sub": "${AWS::StackName}-SecurityGroup"
+            }
+          }
+        ],
+        "TemplateURL": "./security.template",
+        "TimeoutInMinutes": 20
+      }
+    },
+    "TheInstanceStack": {
+      "DependsOn": [
+        "TheSecurityStack",
+        "TheNeworkStack"
+      ],
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "Parameters": {
+          "TheAmi": {
+            "Ref": "TheAmi"
+          },
+          "WebSecurityGroup": {
+            "Fn::GetAtt": [
+              "TheSecurityStack",
+              "Outputs.WebSecurityGroup"
+            ]
+          },
+          "ALBSecurityGroup": {
+            "Fn::GetAtt": [
+              "TheSecurityStack",
+              "Outputs.ALBSecurityGroup"
+            ]
+          },
+          "TheSubnetId": {
+            "Fn::GetAtt": [
+              "TheNeworkStack",
+              "Outputs.SubnetId"
+            ]
+          },
+          "TheVpcId": {
+            "Fn::GetAtt": [
+              "TheNeworkStack",
+              "Outputs.VpcId"
+            ]
+          },
+          "TheOtherSubnetId": {
+            "Fn::GetAtt": [
+              "TheNeworkStack",
+              "Outputs.OtherSubnetId"
+            ]
+          }
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Fn::Sub": "${AWS::StackName}-ASG"
+            }
+          }
+        ],
+        "TemplateURL": "./instance.template",
+        "TimeoutInMinutes": 30
+      }
+    }
+  },
+  "Outputs": {}
+}
