@@ -9,19 +9,20 @@
 
 #### deploy
 
-aws s3 mb s3://$BUCKETNAME
+`aws s3 mb s3://$BUCKETNAME`
 
-aws cloudformation  package  --template-file main.template   --s3-bucket $BUCKETNAME   --s3-prefix stacks   --output-template-file rootstack.json   --use-json   --force-upload
+`aws cloudformation  package  --template-file main.template   --s3-bucket $BUCKETNAME   --s3-prefix stacks   --output-template-file rootstack.json   --use-json   --force-upload`
 
-aws cloudformation deploy --template-file rootstack.json --stack-name WAFDEMO  --s3-bucket $BUCKETNAME  --s3-prefix stacks && aws cloudformation list-exports | jq '.Exports[] | {Name: .Name, Value: .Value} '
+`aws cloudformation deploy --template-file rootstack.json --stack-name WAFDEMO  --s3-bucket $BUCKETNAME  --s3-prefix stacks && aws cloudformation list-exports --query 'Exports[].{Name: Name, Value: Value}'`
 
-aws cloudformation delete-stack --stack-name WAFDEMO && rm rootstack.json
+`aws cloudformation delete-stack --stack-name WAFDEMO && rm rootstack.json`
 
 
-#### todos     
+#### todos  
+- ssh via system manager
 - webserver : restrict ingress and egress to ALB
 - cloudwatch dashboard
-- ssh via system manager
+
 
 
 #### userdata to spin up sample web servers
@@ -34,7 +35,7 @@ echo "<h1>Hello AWS WAF Security Automations</h1>" > index.html
 python -m SimpleHTTPServer 80 .
 ```
 
-**default example:** provided by the us builders for waf demo
+*default example:* provided by US builders for waf demo
 ```
 sudo yum update -y
 sudo yum install -y httpd
