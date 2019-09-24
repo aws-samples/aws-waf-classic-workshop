@@ -1,6 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: set up a launch configuration and attach to ASG
-Metadata:
 Parameters:
   TheAmi:
     Type: String
@@ -16,8 +15,6 @@ Parameters:
     Type: String
   TheWebPort:
     Type: String
-Mappings:
-Conditions:
 Resources:
   TheRolePolicies:
     Type: AWS::IAM::Policy

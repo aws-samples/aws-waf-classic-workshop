@@ -11,9 +11,9 @@
 `aws s3 mb s3://$BUCKETNAME`   
 - Note: bucket must be in same region where you intend to deploy this workshop
 
-`aws cloudformation  package  --template-file main.template   --s3-bucket $BUCKETNAME   --s3-prefix stacks   --output-template-file rootstack   --force-upload`
+`aws cloudformation  package  --template-file main.template   --s3-bucket $BUCKETNAME   --output-template-file rootstack   --force-upload`
 
-`aws cloudformation deploy --template-file rootstack --stack-name WAFDEMO  --capabilities CAPABILITY_IAM && aws cloudformation list-exports --query 'Exports[].{Name: Name, Value: Value}'`
+`aws cloudformation deploy --template-file rootstack --stack-name WAFDEMO  --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND && aws cloudformation list-exports --query 'Exports[].{Name: Name, Value: Value}'`
 
 `aws cloudformation delete-stack --stack-name WAFDEMO && rm rootstack`
 

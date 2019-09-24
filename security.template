@@ -1,6 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: security groups for LoadBalancer and Webservers
-Metadata:
 Parameters:
   ThePublicIp:
     Type: String
@@ -8,8 +7,6 @@ Parameters:
     Type: String
   TheWebPort:
     Type: String
-Mappings:
-Conditions:
 Resources:
   TheWebServerAccessSecurityGroup:
     Type: AWS::EC2::SecurityGroup

@@ -1,6 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Vpc Stack with 2 public subnets in separate AZs
-Metadata:
 Parameters:
   TheVpcRange:
     Type: String
@@ -10,8 +9,6 @@ Parameters:
     Type: String
   ThePublicIp:
     Type: String
-Mappings:
-Conditions:
 Resources:
   TheVpc:
     Type: AWS::EC2::VPC
