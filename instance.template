@@ -1,215 +1,166 @@
-{
-  "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "set up a launch configuration and attach to ASG",
-  "Metadata": {},
-  "Parameters": {
-    "TheAmi": {
-      "Type": "String"
-    },
-    "WebSecurityGroup": {
-      "Type": "String"
-    },
-    "ALBSecurityGroup": {
-      "Type": "String"
-    },
-    "TheVpcId": {
-      "Type": "String"
-    },
-    "TheSubnetId": {
-      "Type": "String"
-    },
-    "TheOtherSubnetId": {
-      "Type": "String"
-    }
-  },
-  "Mappings": {},
-  "Conditions": {},
-  "Resources": {
-    "TheLoadBalancer": {
-      "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
-      "Properties": {
-        "Name": "ApplicationLoadBalancer",
-        "Scheme": "internet-facing",
-        "SecurityGroups": [
-          {
-            "Ref": "ALBSecurityGroup"
-          }
-        ],
-        "Subnets": [
-          {
-            "Ref": "TheSubnetId"
-          },
-          {
-            "Ref": "TheOtherSubnetId"
-          }
-        ],
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {
-              "Fn::Sub": "${AWS::StackName}-ALB"
-            }
-          }
-        ],
-        "Type": "application"
-      }
-    },
-    "TheListener": {
-      "DependsOn": [
-        "TheTargetGroup",
-        "TheLoadBalancer"
-      ],
-      "Type": "AWS::ElasticLoadBalancingV2::Listener",
-      "Properties": {
-        "DefaultActions": [
-          {
-            "TargetGroupArn": {
-              "Ref": "TheTargetGroup"
-            },
-            "Type": "forward"
-          }
-        ],
-        "LoadBalancerArn": {
-          "Ref": "TheLoadBalancer"
-        },
-        "Port": 80,
-        "Protocol": "HTTP"
-      }
-    },
-    "TheRule": {
-      "DependsOn": [
-        "TheListener"
-      ],
-      "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
-      "Properties": {
-        "Actions": [
-          {
-            "TargetGroupArn": {
-              "Ref": "TheTargetGroup"
-            },
-            "Type": "forward"
-          }
-        ],
-        "Conditions": [
-          {
-            "Field": "path-pattern",
-            "Values": [
-              "/"
-            ]
-          }
-        ],
-        "ListenerArn": {
-          "Ref": "TheListener"
-        },
-        "Priority": "1"
-      }
-    },
-    "TheTargetGroup": {
-      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
-      "Properties": {
-        "Name": "WafDemoTargetGroup",
-        "Port": 80,
-        "Protocol": "HTTP",
-        "VpcId": {
-          "Ref": "TheVpcId"
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {
-              "Fn::Sub": "${AWS::StackName}-TargetGroup"
-            }
-          }
-        ],
-        "HealthCheckEnabled": true,
-        "HealthyThresholdCount": 3,
-        "HealthCheckIntervalSeconds": 10,
-        "UnhealthyThresholdCount": 10,
-        "HealthCheckPath": "/",
-        "HealthCheckPort": 80,
-        "HealthCheckProtocol": "HTTP",
-        "HealthCheckTimeoutSeconds": 5,
-        "Matcher": {
-          "HttpCode": "200-299"
-        },
-        "TargetType": "instance",
-        "Targets": []
-      }
-    },
-    "TheAutoScalingGroup": {
-      "Type": "AWS::AutoScaling::AutoScalingGroup",
-      "Properties": {
-        "TargetGroupARNs": [
-          {
-            "Ref": "TheTargetGroup"
-          }
-        ],
-        "VPCZoneIdentifier": [
-          {
-            "Ref": "TheSubnetId"
-          },
-          {
-            "Ref": "TheOtherSubnetId"
-          }
-        ],
-        "AvailabilityZones": [
-          {
-            "Fn::Select": [
-              0,
-              {
-                "Fn::GetAZs": {
-                  "Ref": "AWS::Region"
-                }
-              }
-            ]
-          },
-          {
-            "Fn::Select": [
-              1,
-              {
-                "Fn::GetAZs": {
-                  "Ref": "AWS::Region"
-                }
-              }
-            ]
-          }
-        ],
-        "LaunchConfigurationName": {
-          "Ref": "TheLaunchConfig"
-        },
-        "DesiredCapacity": "3",
-        "MinSize": "2",
-        "MaxSize": "4"
-      }
-    },
-    "TheLaunchConfig": {
-      "Type": "AWS::AutoScaling::LaunchConfiguration",
-      "Properties": {
-        "ImageId": {
-          "Ref": "TheAmi"
-        },
-        "InstanceType": "t2.micro",
-        "AssociatePublicIpAddress": true,
-        "SecurityGroups": [
-          {
-            "Ref": "WebSecurityGroup"
-          }
-        ],
-        "UserData": {
-          "Fn::Base64": "#!/bin/bash\nyum update -y\nyum install -y docker\nservice docker start\ndocker pull bkimminich/juice-shop\ndocker run -d -p 80:3000 bkimminich/juice-shop"
-        }
-      }
-    }
-  },
-  "Outputs": {
-    "TheSiteUrl": {
-      "Description": "url of the application",
-      "Value": {
-        "Fn::Sub": "http://${TheLoadBalancer.DNSName}/"
-      },
-      "Export": {
-        "Name": "the-site-url"
-      }
-    }
-  }
-}
+AWSTemplateFormatVersion: '2010-09-09'
+Description: set up a launch configuration and attach to ASG
+Metadata:
+Parameters:
+  TheAmi:
+    Type: String
+  WebSecurityGroup:
+    Type: String
+  ALBSecurityGroup:
+    Type: String
+  TheVpcId:
+    Type: String
+  TheSubnetId:
+    Type: String
+  TheOtherSubnetId:
+    Type: String
+  TheWebPort:
+    Type: String
+Mappings:
+Conditions:
+Resources:
+  TheRolePolicies:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: TheSystemManagerPolicy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - ssmmessages:CreateControlChannel
+              - ssmmessages:CreateDataChannel
+              - ssmmessages:OpenControlChannel
+              - ssmmessages:OpenDataChannel
+              - ssm:UpdateInstanceInformation
+            Resource: '*'
+          - Effect: Allow
+            Action:
+              - s3:GetEncryptionConfiguration
+            Resource: '*'
+      Roles:
+        - !Ref 'TheRole'
+  TheRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM
+  TheInstanceProfile:
+    DependsOn:
+      - TheRole
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - !Ref 'TheRole'
+  TheLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: ApplicationLoadBalancer
+      Scheme: internet-facing
+      SecurityGroups:
+        - !Ref 'ALBSecurityGroup'
+      Subnets:
+        - !Ref 'TheSubnetId'
+        - !Ref 'TheOtherSubnetId'
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-ALB'
+      Type: application
+  TheListener:
+    DependsOn:
+      - TheTargetGroup
+      - TheLoadBalancer
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - TargetGroupArn: !Ref 'TheTargetGroup'
+          Type: forward
+      LoadBalancerArn: !Ref 'TheLoadBalancer'
+      Port: !Ref 'TheWebPort'
+      Protocol: HTTP
+  TheRule:
+    DependsOn:
+      - TheListener
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - TargetGroupArn: !Ref 'TheTargetGroup'
+          Type: forward
+      Conditions:
+        - Field: path-pattern
+          Values:
+            - /
+      ListenerArn: !Ref 'TheListener'
+      Priority: '1'
+  TheTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: WafDemoTargetGroup
+      Port: !Ref 'TheWebPort'
+      Protocol: HTTP
+      VpcId: !Ref 'TheVpcId'
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-TargetGroup'
+      HealthCheckEnabled: true
+      HealthyThresholdCount: 3
+      HealthCheckIntervalSeconds: 10
+      UnhealthyThresholdCount: 10
+      HealthCheckPath: /
+      HealthCheckPort: !Ref 'TheWebPort'
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 5
+      Matcher:
+        HttpCode: 200-299
+      TargetType: instance
+      Targets: []
+  TheAutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      TargetGroupARNs:
+        - !Ref 'TheTargetGroup'
+      VPCZoneIdentifier:
+        - !Ref 'TheSubnetId'
+        - !Ref 'TheOtherSubnetId'
+      AvailabilityZones:
+        - !Select
+          - 0
+          - !GetAZs
+            Ref: AWS::Region
+        - !Select
+          - 1
+          - !GetAZs
+            Ref: AWS::Region
+      LaunchConfigurationName: !Ref 'TheLaunchConfig'
+      DesiredCapacity: '2'
+      MinSize: '1'
+      MaxSize: '3'
+  TheLaunchConfig:
+    DependsOn:
+      - TheInstanceProfile
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      IamInstanceProfile: !Ref 'TheInstanceProfile'
+      ImageId: !Ref 'TheAmi'
+      InstanceType: t2.micro
+      AssociatePublicIpAddress: true
+      SecurityGroups:
+        - !Ref 'WebSecurityGroup'
+      UserData: !Base64
+        Fn::Sub: "#!/bin/bash\nyum update -y\nyum install -y httpd-tools\nyum install -y docker\nservice docker start\ndocker pull bkimminich/juice-shop\ndocker run -d -p ${TheWebPort}:3000 bkimminich/juice-shop"
+Outputs:
+  TheSiteUrl:
+    Description: public url of the application
+    Value: !Sub 'http://${TheLoadBalancer.DNSName}:${TheWebPort}/'
+    Export:
+      Name: site-url

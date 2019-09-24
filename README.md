@@ -1,7 +1,6 @@
+## WAF demo prep setup
 
-### WAF demo prep setup
-
-- create a VPC, add two subnets in two separate AZs
+- create a VPC, add two public subnets in two separate AZs
 - point an ALB at an AutoScaling Group
 - allow http:80 access
 - instantiate EC2s with a running webserver
@@ -9,23 +8,23 @@
 
 #### deploy
 
-`aws s3 mb s3://$BUCKETNAME`
+`aws s3 mb s3://$BUCKETNAME`   
+- Note: bucket must be in same region where you intend to deploy this workshop
 
-`aws cloudformation  package  --template-file main.template   --s3-bucket $BUCKETNAME   --s3-prefix stacks   --output-template-file rootstack.json   --use-json   --force-upload`
+`aws cloudformation  package  --template-file main.template   --s3-bucket $BUCKETNAME   --s3-prefix stacks   --output-template-file rootstack   --force-upload`
 
-`aws cloudformation deploy --template-file rootstack.json --stack-name WAFDEMO  --s3-bucket $BUCKETNAME  --s3-prefix stacks && aws cloudformation list-exports --query 'Exports[].{Name: Name, Value: Value}'`
+`aws cloudformation deploy --template-file rootstack --stack-name WAFDEMO  --capabilities CAPABILITY_IAM && aws cloudformation list-exports --query 'Exports[].{Name: Name, Value: Value}'`
 
-`aws cloudformation delete-stack --stack-name WAFDEMO && rm rootstack.json`
+`aws cloudformation delete-stack --stack-name WAFDEMO && rm rootstack`
 
 
 #### todos  
-- ssh via system manager
 - webserver : restrict ingress and egress to ALB
 - cloudwatch dashboard
 
 
 
-#### userdata to spin up sample web servers
+#### userdata to spin up sample web servers on ** port 80**
 
 *httpserver on python2.7:* no special installs  nor updates required, so quick to spin up
 

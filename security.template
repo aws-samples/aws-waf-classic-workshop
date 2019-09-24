@@ -1,115 +1,58 @@
-{
-  "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "security groups for LoadBalancer and Webservers",
-  "Metadata": {},
-  "Parameters": {
-    "ThePublicIp": {
-      "Type": "String"
-    },
-    "TheVpcId": {
-      "Type": "String"
-    }
-  },
-  "Mappings": {},
-  "Conditions": {},
-  "Resources": {
-    "TheWebServerAccessSecurityGroup": {
-      "Type": "AWS::EC2::SecurityGroup",
-      "Properties": {
-        "GroupDescription": "allow internet access to webserver over 80",
-        "GroupName": "webserver-access",
-        "VpcId": {
-          "Ref": "TheVpcId"
-        },
-        "SecurityGroupIngress": [
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "80",
-            "ToPort": "80",
-            "CidrIp": {
-              "Ref": "ThePublicIp"
-            }
-          },
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "22",
-            "ToPort": "22",
-            "CidrIp": {
-              "Ref": "ThePublicIp"
-            }
-          }
-        ],
-        "SecurityGroupEgress": [
-          {
-            "IpProtocol": "-1",
-            "FromPort": "0",
-            "ToPort": "0",
-            "CidrIp": {
-              "Ref": "ThePublicIp"
-            }
-          }
-        ],
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {
-              "Fn::Sub": "${AWS::StackName}-TheWebServerAccessSecurityGroup"
-            }
-          }
-        ]
-      }
-    },
-    "TheLoadBalancerAccessSecurityGroup": {
-      "Type": "AWS::EC2::SecurityGroup",
-      "Properties": {
-        "GroupDescription": "allow load balacer access to webserver over 80",
-        "GroupName": "loadbalancer-access",
-        "VpcId": {
-          "Ref": "TheVpcId"
-        },
-        "SecurityGroupIngress": [
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "80",
-            "ToPort": "80",
-            "CidrIp": {
-              "Ref": "ThePublicIp"
-            }
-          }
-        ],
-        "SecurityGroupEgress": [
-          {
-            "IpProtocol": "-1",
-            "FromPort": "0",
-            "ToPort": "0",
-            "CidrIp": {
-              "Ref": "ThePublicIp"
-            }
-          }
-        ],
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {
-              "Fn::Sub": "${AWS::StackName}-TheLoadBalancerAccessSecurityGroup"
-            }
-          }
-        ]
-      }
-    }
-  },
-  "Outputs": {
-    "WebSecurityGroup": {
-      "Description": "web server security group id",
-      "Value": {
-        "Ref": "TheWebServerAccessSecurityGroup"
-      }
-    },
-    "ALBSecurityGroup": {
-      "Description": "alb security group id",
-      "Value": {
-        "Ref": "TheLoadBalancerAccessSecurityGroup"
-      }
-    }
-  }
-}
+AWSTemplateFormatVersion: '2010-09-09'
+Description: security groups for LoadBalancer and Webservers
+Metadata:
+Parameters:
+  ThePublicIp:
+    Type: String
+  TheVpcId:
+    Type: String
+  TheWebPort:
+    Type: String
+Mappings:
+Conditions:
+Resources:
+  TheWebServerAccessSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: allow internet access to webserver
+      GroupName: webserver-access
+      VpcId: !Ref 'TheVpcId'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: !Ref 'TheWebPort'
+          ToPort: !Ref 'TheWebPort'
+          CidrIp: !Ref 'ThePublicIp'
+      SecurityGroupEgress:
+        - IpProtocol: '-1'
+          FromPort: '0'
+          ToPort: '0'
+          CidrIp: !Ref 'ThePublicIp'
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-TheWebServerAccessSecurityGroup'
+  TheLoadBalancerAccessSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: allow load balacer access to webserver
+      GroupName: loadbalancer-access
+      VpcId: !Ref 'TheVpcId'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: !Ref 'TheWebPort'
+          ToPort: !Ref 'TheWebPort'
+          CidrIp: !Ref 'ThePublicIp'
+      SecurityGroupEgress:
+        - IpProtocol: '-1'
+          FromPort: '0'
+          ToPort: '0'
+          CidrIp: !Ref 'ThePublicIp'
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-TheLoadBalancerAccessSecurityGroup'
+Outputs:
+  WebSecurityGroup:
+    Description: web server security group id
+    Value: !Ref 'TheWebServerAccessSecurityGroup'
+  ALBSecurityGroup:
+    Description: alb security group id
+    Value: !Ref 'TheLoadBalancerAccessSecurityGroup'
