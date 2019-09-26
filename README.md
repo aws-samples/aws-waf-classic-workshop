@@ -1,4 +1,5 @@
-## WAF demo prep setup
+
+### WAF demo prep setup
 
 - create a VPC, add two public subnets in two separate AZs
 - point an ALB at an AutoScaling Group
@@ -8,23 +9,23 @@
 
 #### deploy
 
-`aws s3 mb s3://$BUCKETNAME`   
-- Note: bucket must be in same region where you intend to deploy this workshop
+`aws s3 mb s3://$BUCKETNAME`
+> bucket must be created in same region as deployment
 
-`aws cloudformation  package  --template-file main.template   --s3-bucket $BUCKETNAME   --output-template-file rootstack   --force-upload`
+`aws cloudformation  package  --template-file main.template   --s3-bucket $BUCKETNAME   --s3-prefix stacks   --output-template-file rootstack  --force-upload`
 
 `aws cloudformation deploy --template-file rootstack --stack-name WAFDEMO  --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND && aws cloudformation list-exports --query 'Exports[].{Name: Name, Value: Value}'`
 
-`aws cloudformation delete-stack --stack-name WAFDEMO && rm rootstack`
+`aws cloudformation delete-stack --stack-name WAFDEMO && rm rootstack.json`
 
 
-#### todos  
-- webserver : restrict ingress and egress to ALB
-- cloudwatch dashboard
+#### TODO  
+- convert config to inst and add cfn-sig?
+- cloudwatch dashboards
+- use fargate?
 
 
-
-#### userdata to spin up sample web servers on ** port 80**
+#### userdata to spin up sample web servers on **port 80**
 
 *httpserver on python2.7:* no special installs  nor updates required, so quick to spin up
 
@@ -36,6 +37,7 @@ python -m SimpleHTTPServer 80 .
 
 *default example:* provided by US builders for waf demo
 ```
+#!/bin/bash
 sudo yum update -y
 sudo yum install -y httpd
 sudo systemctl enable httpd
@@ -50,6 +52,7 @@ sudo systemctl restart httpd
 ```
 #!/bin/bash
 yum update -y
+yum install -y httpd-tools
 yum install -y docker
 service docker start
 docker pull bkimminich/juice-shop\ndocker run -d -p 80:3000 bkimminich/juice-shop

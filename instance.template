@@ -1,5 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: set up a launch configuration and attach to ASG
+Metadata: {}
 Parameters:
   TheAmi:
     Type: String
@@ -14,7 +15,9 @@ Parameters:
   TheOtherSubnetId:
     Type: String
   TheWebPort:
-    Type: String
+    Type: Number
+Mappings: {}
+Conditions: {}
 Resources:
   TheRolePolicies:
     Type: AWS::IAM::Policy
@@ -154,7 +157,9 @@ Resources:
       SecurityGroups:
         - !Ref 'WebSecurityGroup'
       UserData: !Base64
-        Fn::Sub: "#!/bin/bash\nyum update -y\nyum install -y httpd-tools\nyum install -y docker\nservice docker start\ndocker pull bkimminich/juice-shop\ndocker run -d -p ${TheWebPort}:3000 bkimminich/juice-shop"
+        Fn::Sub: "#!/bin/bash\nsudo yum update -y\nsudo yum install -y httpd-tools\n\
+          sudo yum install -y docker\nservice docker start\ndocker pull bkimminich/juice-shop\n\
+          docker run -d -p ${TheWebPort}:3000 bkimminich/juice-shop"
 Outputs:
   TheSiteUrl:
     Description: public url of the application

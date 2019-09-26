@@ -1,12 +1,15 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: security groups for LoadBalancer and Webservers
+Metadata: {}
 Parameters:
   ThePublicIp:
     Type: String
   TheVpcId:
     Type: String
   TheWebPort:
-    Type: String
+    Type: Number
+Mappings: {}
+Conditions: {}
 Resources:
   TheWebServerAccessSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -18,12 +21,7 @@ Resources:
         - IpProtocol: tcp
           FromPort: !Ref 'TheWebPort'
           ToPort: !Ref 'TheWebPort'
-          CidrIp: !Ref 'ThePublicIp'
-      SecurityGroupEgress:
-        - IpProtocol: '-1'
-          FromPort: '0'
-          ToPort: '0'
-          CidrIp: !Ref 'ThePublicIp'
+          SourceSecurityGroupId: !Ref 'TheLoadBalancerAccessSecurityGroup'
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-TheWebServerAccessSecurityGroup'
@@ -37,11 +35,6 @@ Resources:
         - IpProtocol: tcp
           FromPort: !Ref 'TheWebPort'
           ToPort: !Ref 'TheWebPort'
-          CidrIp: !Ref 'ThePublicIp'
-      SecurityGroupEgress:
-        - IpProtocol: '-1'
-          FromPort: '0'
-          ToPort: '0'
           CidrIp: !Ref 'ThePublicIp'
       Tags:
         - Key: Name

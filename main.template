@@ -67,8 +67,10 @@ Parameters:
     Default: ''
   TheWebPort:
     Description: port application is listening at
-    Default: '80'
-    Type: String
+    Default: 80
+    Type: Number
+Mappings: {}
+Conditions: {}
 Resources:
   TheNeworkStack:
     Type: AWS::CloudFormation::Stack
@@ -116,3 +118,4 @@ Resources:
           Value: !Sub '${AWS::StackName}-ASG'
       TemplateURL: ./instance.template
       TimeoutInMinutes: 30
+Outputs: {}
