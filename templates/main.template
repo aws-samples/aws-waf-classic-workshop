@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: create all non-WAF resources for the Summit WAF session
+Description: Workshop about AWS WAF and WAF Security Automations Solution (uksb-1q1gt3g5d)
 Metadata:
   Version: '0.1'
   AWS::CloudFormation::Interface:
