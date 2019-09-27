@@ -39,7 +39,7 @@ For that:
 * Go to the S3 bucket that you set as Access Log Bucket. If you don't remember, go to stack's `Outputs` tab and search for the value defined for `AppAccessLogBucket`
 * Create a new folder and name it AWSLogs and upload [this file](files/alb-access-log-sample.gz) to it
 
-To not have to wait until this file be process during the regular *Scanners & Probe* scan, you can run an on-demand *Scanners & Probe* scan. For that:
+This file will be processed during the next scheduled *Scanner and Probe* scan. Rather than wait, we will run it on demand.
 
 * Go to the [AWS Lambda console](https://console.aws.amazon.com/lambda/home)
 * Open the `<stack_name>-LambdaLogParserFunction-<ID>` lambda function
