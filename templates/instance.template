@@ -3,7 +3,7 @@ Description: set up a launch configuration and attach to ASG
 Metadata: {}
 Parameters:
   TheAmi:
-    Type: String
+    Type:  AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
   WebSecurityGroup:
     Type: String
   ALBSecurityGroup:
@@ -55,8 +55,6 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM
   TheInstanceProfile:
-    DependsOn:
-      - TheRole
     Type: AWS::IAM::InstanceProfile
     Properties:
       Path: /
@@ -77,9 +75,6 @@ Resources:
           Value: !Sub '${AWS::StackName}-ALB'
       Type: application
   TheListener:
-    DependsOn:
-      - TheTargetGroup
-      - TheLoadBalancer
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
       DefaultActions:
@@ -89,8 +84,6 @@ Resources:
       Port: !Ref 'TheWebPort'
       Protocol: HTTP
   TheRule:
-    DependsOn:
-      - TheListener
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
     Properties:
       Actions:
@@ -101,7 +94,7 @@ Resources:
           Values:
             - /
       ListenerArn: !Ref 'TheListener'
-      Priority: '1'
+      Priority: 1
   TheTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
@@ -146,8 +139,6 @@ Resources:
       MinSize: '1'
       MaxSize: '3'
   TheLaunchConfig:
-    DependsOn:
-      - TheInstanceProfile
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
       IamInstanceProfile: !Ref 'TheInstanceProfile'

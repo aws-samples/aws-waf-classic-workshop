@@ -1,6 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: create all non-WAF resources for the Summit WAF session
 Metadata:
+  Version: 0.1
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
@@ -45,26 +46,6 @@ Parameters:
     Description: subnet CIDR
     Default: 10.0.3.32/28
     Type: String
-  TheSubnetId:
-    Description: for load balancer
-    Type: String
-    Default: ''
-  TheVpcId:
-    Description: for load balancer
-    Type: String
-    Default: ''
-  TheOtherSubnetId:
-    Description: for load balancer
-    Default: ''
-    Type: String
-  WebSecurityGroup:
-    Description: output from security template
-    Type: String
-    Default: ''
-  ALBSecurityGroup:
-    Description: output from security template
-    Type: String
-    Default: ''
   TheWebPort:
     Description: port application is listening at
     Default: 80
@@ -86,8 +67,6 @@ Resources:
       TemplateURL: ./network.template
       TimeoutInMinutes: 20
   TheSecurityStack:
-    DependsOn:
-      - TheNeworkStack
     Type: AWS::CloudFormation::Stack
     Properties:
       Parameters:
@@ -100,9 +79,6 @@ Resources:
       TemplateURL: ./security.template
       TimeoutInMinutes: 20
   TheInstanceStack:
-    DependsOn:
-      - TheSecurityStack
-      - TheNeworkStack
     Type: AWS::CloudFormation::Stack
     Properties:
       Parameters:
