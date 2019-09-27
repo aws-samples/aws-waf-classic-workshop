@@ -1,0 +1,40 @@
+language: python
+
+python:
+  - "3.7"
+
+before_script:
+  - python --version
+  - pip install -r requirements.txt
+
+script:
+  - |
+    if [ $TRAVIS_PULL_REQUEST == true ] && [ $TRAVIS_BRANCH != "master" ]; then
+      VERSION="v$(cat main/main.template | shyaml get-value Metadata.Version)"
+      git tag $VERSION
+    fi
+
+before_deploy:
+  - VERSION="v$(cat main/main.template | shyaml get-value Metadata.Version)"
+  - if [ -z "$TRAVIS_TAG" ]; then git tag $VERSION; fi
+  - zip -r "$VERSION.zip" -@ < ci/include.lst
+
+deploy:
+  - provider: releases
+    api_key:
+      secure: Yf9p3yVj85V3Ur9rt7SrNPkYTN1bfPaW1nWMtIjfEYdeKAHDOJGasJ/6flPj2WXkAyho7tPrp3QupV+c37hZkdJK0ZxhQYvIzrE19BBTo1BuXF6z10lOInC1oF+tKuFHNKmmtYa/0wJK4gyF251xKqS+Q3HaBM86aLS3ZNHJVlVQM4rVh/O139y7Ar+cXxfpAugpSKljWKmPC7tKV9nZvQvUrpyXZ/HbHDdNNSwhxcb38OcRUtbP6klSMzBRa4Es2l9uFgepyJytsFeRx3w4DUUXFDhkk8rXeOMnkatKnpzyuS9yrChLL/h95TE2jlB4vPe+yB4JLbqyNd1dq5KrHpG8XDVtm3d7lqLQ3/IAc+VgrMVG/3TAJjSjY+pKZIBv0B0LGqlbYLORCUB8x/ip+DfeM222y8d/BDeHUhw2jFRAaRt5WBAoFJ2S+Bw0sjjWO2SElxBcAAPBYSc9h16AQhkgZj9cMfwcZniwu6BbAppKFUM9C1pLT6DN8McYg77eHY3zmTCYzgIkQ/b7fnmf8zCXNqUkRe2wW3poqTspEGeoJiqp7cUGGC4qBnvNWXvVxAGn1ZNahVOrhVJI8OzPxc1jlnEheQFNidW522SNDJX+9od7RuI32MO9U0uwgzJNGQuANRddCWA8Y+T2frbnC46hVWi9jsOvSyoZiV0XAxs=
+    file: $VERSION.zip
+    skip_cleanup: true
+    on:
+      branch: master
+      condition: type != pull_request
+  - provider: script
+    script: aws s3 cp ./$VERSION.zip s3://$CFN_BUCKET/aws-waf-workshop/$VERSION/aws-waf-workshop.zip
+    skip_cleanup: true
+    on:
+      tags: true
+
+notifications:
+  email: false
+
+cache: pip
