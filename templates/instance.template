@@ -3,7 +3,7 @@ Description: set up a launch configuration and attach to ASG
 Metadata: {}
 Parameters:
   TheAmi:
-    Type:  AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Type: String
   WebSecurityGroup:
     Type: String
   ALBSecurityGroup:
