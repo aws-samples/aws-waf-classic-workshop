@@ -155,5 +155,3 @@ Outputs:
   TheSiteUrl:
     Description: public url of the application
     Value: !Sub 'http://${TheLoadBalancer.DNSName}:${TheWebPort}/'
-    Export:
-      Name: site-url
