@@ -58,7 +58,7 @@ The solutions refer to the Athena by a saved query ID. As Athena don't allow you
 
 ![athena-saved-queries](2-01-athena-saved-queries.png)
 
-* Apply your changes (ex: change from COUNT(*)>=50 to COUNT(*)>=500);
+* Apply your changes (ex: change from `COUNT(*)>=50` to `COUNT(*)>=500`);
 * Save the new Athena Query and copy the new query ID.
 
 
