@@ -1,6 +1,6 @@
 # Step 1 - Getting Started with AWS WAF Security Automations Solution
 
-## Part I - Associate the solution's AWS WAF Web ACL with your ALB
+## 1.1 Associate the solution's AWS WAF Web ACL with your ALB
 
 After deploying the Web App, look at the [CloudFormation Exports](https://console.aws.amazon.com/cloudformation/home?#/exports). You should have a value called `site-url`. That is the address of the Application Load Balancer sitting on top of the Web App. Take note of that URL.
 
@@ -15,14 +15,14 @@ Next, you need to associate the solution's AWS WAF Web ACL with your ALB. For th
 * Finally, click the "Add" button.
 
 
-## Part II - SQL Injection and XSS
+## 1.2 SQL Injection and XSS
 
 Access the `site-url` endpoint and include bad signatures to the requests. You can use, for example:
 
 * SQL Injection: `<your-endpoint>/?username=1'%20or%20'1'%20=%20'1&password=1'%20or%20'1'%20=%20'1'`
 * XSS: `<your-endpoint>/?<SCRIPT>alert(“Cookie”+document.cookie)</SCRIPT>`
 
-## Part III - HTTP Flood (AWS Lambda log parser)
+## 1.3 HTTP Flood (AWS Lambda log parser)
 
 To test HTTP Flood, you can simulate an WAF log file deliver event. For that:
 
@@ -32,7 +32,7 @@ To test HTTP Flood, you can simulate an WAF log file deliver event. For that:
 * Check if the file `<stack_name>-waf_log_out.json` was added to the `WafLogBucket` bucket
 * Go to [AWS WAF console](https://console.aws.amazon.com/wafv2/home?#/webacls) and check if `HTTP Flood` rule contains any IP listed
 
-## Part IV - Scanners & Probe (Amazon Athena log parser)
+## 1.4 Scanners & Probe (Amazon Athena log parser)
 
 To test Scanners & Probe, you can simulate a CloudWatch event running a query in a bucket that contains a sample access log file.
 For that:
