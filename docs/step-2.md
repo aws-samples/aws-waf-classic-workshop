@@ -30,7 +30,7 @@ Let's test your HTTP flood protection. We will use [Apache AB](https://httpd.apa
 
 > ⚠️ **Warning**: Do not run the benchmarking tool from your local machine!
 
-We will use Systems Manager Session Manager to connect to the instance and run the `ab` benchmarking tool.
+We will use [Systems Manager Session Manager](https://console.aws.amazon.com/systems-manager/session-manager/start-session) to connect to the instance and run the `ab` benchmarking tool.
 
 Run against your endpoint 50,000 requests, with concurrency 100.
 ```bash
