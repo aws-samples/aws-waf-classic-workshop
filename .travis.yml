@@ -10,12 +10,12 @@ before_script:
 script:
   - |
     if [ $TRAVIS_PULL_REQUEST == true ] && [ $TRAVIS_BRANCH != "master" ]; then
-      VERSION="v$(cat main/main.template | shyaml get-value Metadata.Version)"
+      VERSION="v$(cat templates/main.template | shyaml get-value Metadata.Version)"
       git tag $VERSION
     fi
 
 before_deploy:
-  - VERSION="v$(cat main/main.template | shyaml get-value Metadata.Version)"
+  - VERSION="v$(cat templates/main.template | shyaml get-value Metadata.Version)"
   - if [ -z "$TRAVIS_TAG" ]; then git tag $VERSION; fi
   - zip -r "$VERSION.zip" -@ < ci/include.lst
 
