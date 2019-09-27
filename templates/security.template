@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: security groups for LoadBalancer and Webservers
+Metadata: {}
+Parameters:
+  ThePublicIp:
+    Type: String
+  TheVpcId:
+    Type: String
+  TheWebPort:
+    Type: Number
+Mappings: {}
+Conditions: {}
+Resources:
+  TheWebServerAccessSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: allow internet access to webserver
+      GroupName: webserver-access
+      VpcId: !Ref 'TheVpcId'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: !Ref 'TheWebPort'
+          ToPort: !Ref 'TheWebPort'
+          SourceSecurityGroupId: !Ref 'TheLoadBalancerAccessSecurityGroup'
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-TheWebServerAccessSecurityGroup'
+  TheLoadBalancerAccessSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: allow load balacer access to webserver
+      GroupName: loadbalancer-access
+      VpcId: !Ref 'TheVpcId'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: !Ref 'TheWebPort'
+          ToPort: !Ref 'TheWebPort'
+          CidrIp: !Ref 'ThePublicIp'
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-TheLoadBalancerAccessSecurityGroup'
+Outputs:
+  WebSecurityGroup:
+    Description: web server security group id
+    Value: !Ref 'TheWebServerAccessSecurityGroup'
+  ALBSecurityGroup:
+    Description: alb security group id
+    Value: !Ref 'TheLoadBalancerAccessSecurityGroup'
