@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: create all non-WAF resources for the Summit WAF session
 Metadata:
-  Version: 0.1
+  Version: '0.1'
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
