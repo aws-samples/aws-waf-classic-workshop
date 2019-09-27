@@ -40,4 +40,4 @@ Step by step instructions:
 * On the final page, check the box at the bottom allowing AWS CloudFormation to create IAM resources with custom names.
 * Click the orange "Create stack" button at the bottom-right of the page to deploy the stack into your account.
 
-# [Next step](step-2.md)
+# [Next step](step-1.md)
