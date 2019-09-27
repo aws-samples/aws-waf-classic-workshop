@@ -62,7 +62,7 @@ The solutions refer to the Athena by a saved query ID. As Athena don't allow you
 * Save the new Athena Query and copy the new query ID.
 
 
-> NOTE: The query ID is part of the URL when you access the saved query (https://console.aws.amazon.com/athena/home?force&region=us-east-1#query/saved/**_query_id_**). Alternatively, you can use the `get-named-query CLI command`;
+> NOTE: The query ID is part of the URL when you access the saved query (https://console.aws.amazon.com/athena/home?force#query/saved/**_query_id_**). Alternatively, you can use the `get-named-query CLI command`;
 
 
 * Navigate to LogParser events and select the corresponding event (ScannerProbe);
