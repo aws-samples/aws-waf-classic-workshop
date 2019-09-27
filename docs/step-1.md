@@ -2,7 +2,7 @@
 
 ## 1.1 Associate the solution's AWS WAF Web ACL with your ALB
 
-After deploying the Web App, look at the [CloudFormation Exports](https://console.aws.amazon.com/cloudformation/home?#/exports). You should have a value called `site-url`. That is the address of the Application Load Balancer sitting on top of the Web App. Take note of that URL.
+After deploying the Web App, look at the Main Stack Outputs tab. You should have a value called `TheSiteUrl`. That is the address of the Application Load Balancer sitting on top of the Web App. Take note of that URL.
 
 Next, you need to associate the solution's AWS WAF Web ACL with your ALB. For that:
 * Go to the [AWS WAF console](https://console.aws.amazon.com/wafv2/home?#/webacls)
