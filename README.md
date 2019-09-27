@@ -1,5 +1,9 @@
 # AWS WAF workshop
 
+A workshop about [AWS WAF](https://aws.amazon.com/waf/) and the [WAF Security Automations Solution](https://aws.amazon.com/solutions/aws-waf-security-automations/)
+
+[![Build Status](https://travis-ci.org/aws-samples/amazon-transcribe-news-media-analysis.svg?branch=master)](https://travis-ci.org/aws-samples/amazon-transcribe-news-media-analysis)
+
 > Warning: This project is currently being developed and the code shouldn't be used in production.
 
 ### usage 
