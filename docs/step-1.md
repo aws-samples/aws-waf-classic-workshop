@@ -30,7 +30,7 @@ To test HTTP Flood, you can simulate an WAF log file deliver event. For that:
 * Download [this file](files/waf-access-log-sample.gz) to your machine, then upload it to the bucket name you found in the previous step
 * Wait a few seconds (while the log parser function processes the new WAF log file)
 * Check if the file `<stack_name>-waf_log_out.json` was added to the same bucket
-* Check the [AWS WAF console](https://console.aws.amazon.com/wafv2/home?#/webacls) to see if `HTTP Flood` rule contains any IP listed
+* Check the [AWS WAF console](https://console.aws.amazon.com/wafv2/home?#/webacls) (you may need to change the filter to WAF resources in your chosen region) to see if `HTTP Flood` rule contains any IP listed
 
 ## 1.4 Scanners & Probe (Amazon Athena log parser)
 
