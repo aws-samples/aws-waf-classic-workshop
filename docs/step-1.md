@@ -22,6 +22,9 @@ Access the `site-url` endpoint and include bad signatures to the requests. You c
 * SQL Injection: `<your-endpoint>/?username=1'%20or%20'1'%20=%20'1&password=1'%20or%20'1'%20=%20'1'`
 * XSS: `<your-endpoint>/?<SCRIPT>alert(“Cookie”+document.cookie)</SCRIPT>`
 
+Optional Extension - Try and find an input form on the juice site to perform a XSS attack. See if your WAF blocks the malicious request.
+If you bypass the WAF by accessing the EC2 instance directly, you will see the a successfull attack.
+
 ## 1.3 HTTP Flood (AWS Lambda log parser)
 
 To test HTTP Flood, you can simulate an WAF log file deliver event. For that:
