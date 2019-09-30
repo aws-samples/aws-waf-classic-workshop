@@ -17,8 +17,8 @@ Resources:
     Type: AWS::EC2::VPC
     Properties:
       CidrBlock: !Ref 'TheVpcRange'
-      EnableDnsHostnames: 'True'
-      EnableDnsSupport: 'True'
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
       InstanceTenancy: default
       Tags:
         - Key: Name
@@ -31,7 +31,7 @@ Resources:
         - !GetAZs
           Ref: AWS::Region
       CidrBlock: !Ref 'TheSubnetRange'
-      MapPublicIpOnLaunch: 'True'
+      MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-SUBNET'
@@ -44,7 +44,7 @@ Resources:
         - !GetAZs
           Ref: AWS::Region
       CidrBlock: !Ref 'TheOtherSubnetRange'
-      MapPublicIpOnLaunch: 'True'
+      MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-OTHERSUBNET'
