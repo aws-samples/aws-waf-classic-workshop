@@ -22,8 +22,21 @@ The goal now is to apply customizations and check how it affects the log parser 
 
 Here is a sample of changed file:
 
-![http-flood-config](2-00-http-flood-config.png)
-
+```json
+{
+  "general": {
+    "requestThreshold": 2000,
+    "blockPeriod": 240,
+    "ignoredSufixes": [".css", ".js", ".jpg", ".png", ".gif"]
+  },
+  "uriList": {
+    "/search": {
+      "errorTreshold": 500,
+      "blockPeriod":600
+    }
+  }
+}
+```
 
 ### 2.1.3 Testing the new rules
 Let's test your HTTP flood protection. We will use [Apache AB](https://httpd.apache.org/docs/2.4/programs/ab.html).
