@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Workshop about AWS WAF and WAF Security Automations Solution (uksb-1q1gt3g5d)
 Metadata:
-  Version: '0.6'
+  Version: '0.7'
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
