@@ -26,11 +26,11 @@ Access the `site-url` endpoint and include bad signatures to the requests. You c
 
 To test HTTP Flood, you can simulate an WAF log file deliver event. For that:
 
-* Go to the CloudFormation stack's `Outputs` tab and search for the value defined for `WafLogBucket`
-* Go to S3, and upload [this file](files/waf-access-log-sample.gz) to the `WafLogBucket` bucket
+* Go to the CloudFormation Console, and inspect the WAF Automation stack's `Outputs` tab to find the value defined for `WafLogBucket`
+* Download [this file](files/waf-access-log-sample.gz) to your machine, then upload it to the bucket name you found in the previous step
 * Wait a few seconds (while the log parser function processes the new WAF log file)
-* Check if the file `<stack_name>-waf_log_out.json` was added to the `WafLogBucket` bucket
-* Go to [AWS WAF console](https://console.aws.amazon.com/wafv2/home?#/webacls) and check if `HTTP Flood` rule contains any IP listed
+* Check if the file `<stack_name>-waf_log_out.json` was added to the same bucket
+* Check the [AWS WAF console](https://console.aws.amazon.com/wafv2/home?#/webacls) (you may need to change the filter to WAF resources in your chosen region) to see if `HTTP Flood` rule contains any IP listed
 
 ## 1.4 Scanners & Probe (Amazon Athena log parser)
 
