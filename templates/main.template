@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Workshop about AWS WAF and WAF Security Automations Solution (uksb-1q1gt3g5d)
 Metadata:
-  Version: '0.4'
+  Version: '0.5'
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
@@ -93,4 +93,5 @@ Resources:
       TemplateURL: ./instance.template
       TimeoutInMinutes: 30
 Outputs:
-  TheSiteUrl: !GetAtt TheInstanceStack.Outputs.TheSiteUrl
+  TheSiteUrl:
+    Value: !GetAtt TheInstanceStack.Outputs.TheSiteUrl
