@@ -22,10 +22,24 @@ To complete this workshop you will require the following:
     * If you don’t already have an AWS account, create one at <https://aws.amazon.com> by following the on-screen instructions
 * Your access to the AWS account must have IAM permissions to launch AWS CloudFormation templates that create IAM roles.
 
+## Contents
+
 ### [Step 0 - Deploy the Cloudformation Stacks](docs/step-0.md)
+
+Step 0 will guide you through the deployment of the templates required for the workshop.
+
 ### [Step 1 - Getting Started with AWS WAF Security Automations Solution](docs/step-1.md)
+
+Step 1 will set up the WAF with your application. It will explore how the WAF Security Automation Solution works to block three types of attack.
+
 ### [Step 2 - Customising and extending AWS WAF Security Automations Solution](docs/step-2.md)
 
-# License
+Step 2 will build on Step 1 by customisings the rules operation by the Security Automation.
+
+### [Step 3 - Optional Extensions](docs/step-3.md)
+
+Step 3 contains two optional extensions to the workshop.
+
+## License
 
 This library is licensed under the MIT-0 License. See the LICENSE file.
