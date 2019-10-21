@@ -34,7 +34,10 @@ Step 0 will guide you through the deployment of the templates required for the w
 
 ### [Step 1 - Getting Started with AWS WAF Security Automations Solution](docs/step-1.md)
 
-Step 1 will set up the WAF with your application. It will explore how the WAF Security Automation Solution works to block three types of attack.
+Step 1 will set up the WAF with your application. It will explore how the WAF Security Automation Solution works to block different types of attack. It will cover how the WAF & Security Automation solution protects against:
+* SQL Injection & Cross Site Scripting
+* HTTP Flood
+* Scanners and Probes
 
 ### [Step 2 - Customising and extending AWS WAF Security Automations Solution](docs/step-2.md)
 
