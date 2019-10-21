@@ -15,8 +15,8 @@ The Security Automation Solution extends WAF by deploying a set of preconfigured
 
 ## Learning Objectives
 
-* Understand the functionality provided by WAF
-* Understand how the Security Automation Solution extends WAF
+* Understand the built in functionality provided by AWS WAF
+* Understand how the Security Automation Solution extends AWS WAF
 * Understand how to configure the Security Automation Solution
 
 ## Prerequisites
