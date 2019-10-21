@@ -1,6 +1,12 @@
 # Step 1 - Getting Started with AWS WAF Security Automations Solution
 
+## Introduction
+
+In this Step we will add the Application Load Balancer (ALB) of the sample application with the AWS WAF. Next, we will explore how the AWS WAF can protect against malicious requests containing SQL Injection or Cross Site Scripting attacks. Finally, we demonstrate how the Security Automation Solution updates the AWS WAF ruleset to protect against HTTP Floods, Scanners and Probes.
+
 ## 1.1 Associate the solution's AWS WAF Web ACL with your ALB
+
+The AWS WAF can be used with either API Gateway, Amazon CloudFront or an Application Load Balancer. In this example, we are using AWS WAF with an Application Load Balancer. Before the AWS WAF can recieve requests, we must add the Application Load Balancer to the AWS WAF Resource.
 
 After deploying the Web App, look at the Main Stack Outputs tab. You should have a value called `TheSiteUrl`. That is the address of the Application Load Balancer sitting on top of the Web App. Take note of that URL.
 
@@ -15,7 +21,9 @@ Next, you need to associate the solution's AWS WAF Web ACL with your ALB. For th
 * Finally, click the "Add" button.
 
 
-## 1.2 SQL Injection and XSS
+## 1.2 SQL Injection and Cross Site Scripting (XSS)
+
+SQL Injection and XSS are two common attacks. The AWS WAF Security Automation Solution creates rules in AWS WAF to deny requests that contain SQL Injection or XSS. We will try two attacks against our sample application to demonstrate this.
 
 Access the `site-url` endpoint and include bad signatures to the requests. You can use, for example:
 
@@ -27,7 +35,10 @@ If you bypass the WAF by accessing the EC2 instance directly, you will see the a
 
 ## 1.3 HTTP Flood (AWS Lambda log parser)
 
-To test HTTP Flood, you can simulate an WAF log file deliver event. For that:
+HTTP Flood is a style of attack where an application recieves a large volume of legitimate requests, intended to overwhelm the application.
+We will demonstrate functionality provided by the Security Automation Solution to detect these style of attacks and block the responsible IP address in AWS WAF.
+
+Rather than execute an HTTP Flood attack on our sample application, we can simulate one by providing an example log file. This will be processed by the Security Automation Solution. 
 
 * Go to the CloudFormation Console, and inspect the WAF Automation stack's `Outputs` tab to find the value defined for `WafLogBucket`
 * Download [this file](files/waf-access-log-sample.gz) to your machine, then upload it to the bucket name you found in the previous step
@@ -36,6 +47,8 @@ To test HTTP Flood, you can simulate an WAF log file deliver event. For that:
 * Check the [AWS WAF console](https://console.aws.amazon.com/wafv2/home?#/webacls) (you may need to change the filter to WAF resources in your chosen region) to see if `HTTP Flood` rule contains any IP listed
 
 ## 1.4 Scanners & Probe (Amazon Athena log parser)
+
+Scanners and Probes are used by malicious actors to search for common and known vulnerabilities in websites. A site targeted by a Scanner or Probe will generate a large number of HTTP errors in the 400 range. The Security Automation Solution monitors for this uptick in errors, and blocks the responsible IP address.
 
 To test Scanners & Probe, you can simulate a CloudWatch event running a query in a bucket that contains a sample access log file.
 For that:
