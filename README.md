@@ -13,7 +13,11 @@ The goal of this workshop is to introduce the AWS Web Application Firewall (WAF)
 The AWS Web Application Firewall (WAF) enables customers to create rules to block common attack patterns, administered via APIs. 
 The Security Automation Solution extends WAF by deploying a set of preconfigured rules to protect applications. These rules can be customised for your application.
 
+## Learning Objectives
 
+* Understand the functionality provided by WAF
+* Understand how the Security Automation Solution extends WAF
+* Understand how to configure the Security Automation Solution
 
 ## Prerequisites
 
