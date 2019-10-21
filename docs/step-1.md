@@ -42,6 +42,12 @@ Rather than execute an HTTP Flood attack on our sample application, we can simul
 
 * Go to the CloudFormation Console, and inspect the WAF Automation stack's `Outputs` tab to find the value defined for `WafLogBucket`
 * Download [this file](files/waf-access-log-sample.gz) to your machine, then upload it to the bucket name you found in the previous step
+
+![Access-Log-Download](1-01-access-log-sample-download.png)
+
+> Note that this file is intentionally compressed. Do not decompress it before reuploading it
+
+
 * Wait a few seconds (while the log parser function processes the new WAF log file)
 * Check if the file `<stack_name>-waf_log_out.json` was added to the same bucket
 * Check the [AWS WAF console](https://console.aws.amazon.com/wafv2/home?#/webacls) (you may need to change the filter to WAF resources in your chosen region) to see if `HTTP Flood` rule contains any IP listed
@@ -53,7 +59,7 @@ Scanners and Probes are used by malicious actors to search for common and known 
 To test Scanners & Probe, you can simulate a CloudWatch event running a query in a bucket that contains a sample access log file.
 For that:
 * Go to the S3 bucket that you set as Access Log Bucket. If you don't remember, go to stack's `Outputs` tab and search for the value defined for `AppAccessLogBucket`
-* Create a new folder and name it AWSLogs and upload [this file](files/alb-access-log-sample.gz) to it
+* Create a new folder and name it AWSLogs and upload [this file](files/alb-access-log-sample.gz) to it.
 
 This file will be processed during the next scheduled *Scanner and Probe* scan. Rather than wait, we will run it on demand.
 
