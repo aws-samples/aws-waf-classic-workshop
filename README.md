@@ -6,9 +6,21 @@ A workshop about [AWS WAF](https://aws.amazon.com/waf/) and the [WAF Security Au
 
 > Warning: This project is currently being developed and the code shouldn't be used in production.
 
-# Prerequisites
+## Introduction
 
-To deploy the application you will require an AWS account. If you don’t already have an AWS account, create one at <https://aws.amazon.com> by following the on-screen instructions. Your access to the AWS account must have IAM permissions to launch AWS CloudFormation templates that create IAM roles.
+The goal of this workshop is to introduce the AWS Web Application Firewall (WAF) and the WAF Security Automations Solution. 
+
+The AWS Web Application Firewall (WAF) enables customers to create rules to block common attack patterns, administered via APIs. 
+The Security Automation Solution extends WAF by deploying a set of preconfigured rules to protect applications. These rules can be customised for your application.
+
+
+
+## Prerequisites
+
+To complete this workshop you will require the following:
+* An AWS Account. 
+    * If you don’t already have an AWS account, create one at <https://aws.amazon.com> by following the on-screen instructions
+* Your access to the AWS account must have IAM permissions to launch AWS CloudFormation templates that create IAM roles.
 
 ### [Step 0 - Deploy the Cloudformation Stacks](docs/step-0.md)
 ### [Step 1 - Getting Started with AWS WAF Security Automations Solution](docs/step-1.md)
