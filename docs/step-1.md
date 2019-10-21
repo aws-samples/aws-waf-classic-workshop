@@ -40,17 +40,20 @@ We will demonstrate functionality provided by the Security Automation Solution t
 
 Rather than execute an HTTP Flood attack on our sample application, we can simulate one by providing an example log file. This will be processed by the Security Automation Solution. 
 
-* Go to the CloudFormation Console, and inspect the WAF Automation stack's `Outputs` tab to find the value defined for `WafLogBucket`
-* Download [this file](files/waf-access-log-sample.gz) to your machine, then upload it to the bucket name you found in the previous step
+* Go to the CloudFormation Console, and inspect the WAF Automation stack's `Outputs` tab to find the value defined for `WafLogBucket`. Note this name. You will need it next.
+* Download [this file](files/waf-access-log-sample.gz) to your machine.
 
 ![Access-Log-Download](1-01-access-log-sample-download.png)
 
 > Note that this file is intentionally compressed. Do not decompress it before reuploading it
 
-
-* Wait a few seconds (while the log parser function processes the new WAF log file)
+* Upload the file to the S3 bucket you noted down in the previous step.
+    * To upload the file to the S3 bucket via the console, navigate to the [S3 Console page](https://s3.console.aws.amazon.com/s3/)
+    * Select the bucket you noted in the previous step.
+    * Select `upload`, then select the `waf-access-log-sample.gz` file.
+* The lambda function is triggered by the creation of a new file in the S3 Bucket. Wait a few seconds while the log parser function processes the new WAF log file. 
 * Check if the file `<stack_name>-waf_log_out.json` was added to the same bucket
-* Check the [AWS WAF console](https://console.aws.amazon.com/wafv2/home?#/webacls) (you may need to change the filter to WAF resources in your chosen region) to see if `HTTP Flood` rule contains any IP listed
+* Check the [AWS WAF console](https://console.aws.amazon.com/wafv2/home?#/webacls) (you may need to change the filter to WAF resources in your chosen region) to see if `HTTP Flood` rule contains any IP listed.
 
 ## 1.4 Scanners & Probe (Amazon Athena log parser)
 
