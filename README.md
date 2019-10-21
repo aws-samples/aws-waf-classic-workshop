@@ -8,9 +8,9 @@ A workshop about [AWS WAF](https://aws.amazon.com/waf/) and the [WAF Security Au
 
 ## Introduction
 
-The goal of this workshop is to introduce the AWS Web Application Firewall (WAF) and the WAF Security Automations Solution. 
+This workshop introduces AWS WAF and the AWS WAF Security Automations solution.
 
-The AWS Web Application Firewall (WAF) enables customers to create rules to block common attack patterns, administered via APIs. 
+The AWS WAF enables customers to create rules to block common attack patterns, administered via APIs. 
 The Security Automation Solution extends WAF by deploying a set of preconfigured rules to protect applications. These rules can be customised for your application.
 
 ## Learning Objectives
@@ -30,18 +30,18 @@ To complete this workshop you will require the following:
 
 ### [Step 0 - Deploy the Cloudformation Stacks](docs/step-0.md)
 
-Step 0 will guide you through the deployment of the templates required for the workshop.
+In step 0 you will deploy the AWS resources required for later steps of the workshop.
 
 ### [Step 1 - Getting Started with AWS WAF Security Automations Solution](docs/step-1.md)
 
-Step 1 will set up the WAF with your application. It will explore how the WAF Security Automation Solution works to block different types of attack. It will cover how the WAF & Security Automation solution protects against:
+In step 1 you will set up the AWS WAF with an example web application and explore how the AWS WAF Security Automation Solution blocks three common types of attack.
 * SQL Injection & Cross Site Scripting
 * HTTP Flood
 * Scanners and Probes
 
 ### [Step 2 - Customising and extending AWS WAF Security Automations Solution](docs/step-2.md)
 
-Step 2 will build on Step 1 by customisings the rules operation by the Security Automation.
+In step 2 you will customise the rules and settings of the the AWS WAF Security Automation Solution.
 
 ### [Step 3 - Optional Extensions](docs/step-3.md)
 
