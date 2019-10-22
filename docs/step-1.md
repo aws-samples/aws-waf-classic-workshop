@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In this Step we will add the Application Load Balancer (ALB) of the sample application with the AWS WAF. Next, we will explore how the AWS WAF can protect against malicious requests containing SQL Injection or Cross Site Scripting attacks. Finally, we demonstrate how the Security Automation Solution updates the AWS WAF ruleset to protect against HTTP Floods, Scanners and Probes.
+In this Step you will associate AWS WAF with the Application Load Balancer (ALB) of the sample application, then explore how the AWS WAF can protect against malicious requests containing SQL Injection or Cross Site Scripting attacks, and finally examine how the Security Automation Solution updates the AWS WAF ruleset to protect against HTTP Floods, Scanners and Probes.
 
 ## 1.1 Associate the solution's AWS WAF Web ACL with your ALB
 
