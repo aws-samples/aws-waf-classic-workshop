@@ -6,7 +6,7 @@ In this Step we will add the Application Load Balancer (ALB) of the sample appli
 
 ## 1.1 Associate the solution's AWS WAF Web ACL with your ALB
 
-The AWS WAF can be used with either API Gateway, Amazon CloudFront or an Application Load Balancer. In this example, we are using AWS WAF with an Application Load Balancer. Before the AWS WAF can recieve requests, we must add the Application Load Balancer to the AWS WAF Resource.
+The AWS WAF can be used with either API Gateway, Amazon CloudFront or an Application Load Balancer. In this example, we are using AWS WAF with an Application Load Balancer. Before the AWS WAF can receive requests, you must add the Application Load Balancer to the AWS WAF Resource.
 
 After deploying the Web App, look at the Main Stack Outputs tab. You should have a value called `TheSiteUrl`. That is the address of the Application Load Balancer sitting on top of the Web App. Take note of that URL.
 
