@@ -35,7 +35,7 @@ If you bypass the WAF by accessing the EC2 instance directly, you will see the a
 
 ## 1.3 HTTP Flood (AWS Lambda log parser)
 
-HTTP Flood is a style of attack where an application recieves a large volume of legitimate requests, intended to overwhelm the application.
+HTTP floods are a type of denial-of-service attack where an application receives a large volume of requests intended to exhaust the resources of an application, preventing it from handling requests from legitimate users.
 We will demonstrate functionality provided by the Security Automation Solution to detect these style of attacks and block the responsible IP address in AWS WAF.
 
 Rather than execute an HTTP Flood attack on our sample application, we can simulate one by providing an example log file. This will be processed by the Security Automation Solution. 
