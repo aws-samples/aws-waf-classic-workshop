@@ -2,6 +2,9 @@
 
 To run the lab, you will need to deploy the [WAF Security Automations Solution](https://aws.amazon.com/solutions/aws-waf-security-automations/) and a sample Web App that we'll use for testing.
 
+> **Note**  
+You are responsible for the cost of the AWS services used while running these CloudFormation stacks. There is no additional cost for using them. For full details, see the pricing pages for each AWS service you will be using in these CloudFormation stacks. Prices are subject to change.
+
 ## Deploy the WAF Security Automations Solution
 
 |Region|Launch Template|
