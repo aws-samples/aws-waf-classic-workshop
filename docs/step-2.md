@@ -45,11 +45,17 @@ Here is a sample of changed file:
 ```
 
 ### 2.1.3 Testing the new rules
-Let's test your HTTP flood protection. We will use [Apache AB](https://httpd.apache.org/docs/2.4/programs/ab.html).
 
-> ⚠️ **Warning**: Do not run the benchmarking tool from your local machine!
+To test the HTTP Flood protection you customised earlier in this step, you will generate a large number of requests. The Flood Protection should add the source IP of the requests to a deny list.
 
-We will use [Systems Manager Session Manager](https://console.aws.amazon.com/systems-manager/session-manager/start-session) to connect to the instance and run the `ab` benchmarking tool.
+We will use [Apache AB](https://httpd.apache.org/docs/2.4/programs/ab.html).
+Apache AB is a tool for benchmarking a web server.  You will use it to generate a specified number of HTTP requests against your sample Application
+
+> ⚠️ **Warning**: Do not run the benchmarking tool from your local machine! \
+> Doing so will generate a large amount of traffic on your local network. \
+> Use the EC2 instance of the Sample Web App to perform the requests against the external endpoint.
+
+You will use [Systems Manager Session Manager](https://console.aws.amazon.com/systems-manager/session-manager/start-session) to connect to the instance and run the `ab` benchmarking tool. Apache AB is pre-installed on the instance.
 
 Run against your endpoint 50,000 requests, with concurrency 100.
 ```bash
