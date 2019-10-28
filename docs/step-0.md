@@ -1,6 +1,8 @@
 # Step 0 - Deploy the Cloudformation Stacks
 
-To run the lab, you will need to deploy the [WAF Security Automations Solution](https://aws.amazon.com/solutions/aws-waf-security-automations/) and a sample Web App that we'll use for testing.
+In this step, you will deploy two CloudFormation templates required for the workshop.
+
+You will deploy the [WAF Security Automations Solution](https://aws.amazon.com/solutions/aws-waf-security-automations/) and a sample Web Application. The sample Web Application will be protected by the WAF.
 
 ## Deploy the WAF Security Automations Solution
 
