@@ -13,15 +13,10 @@ To run the lab, you will need to deploy the [WAF Security Automations Solution](
 |**EU (London)** (eu-west-2) | [![Deploy AWS WAF Security Automations Solution](deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=eu-west-2#/stacks/create/review?stackName=AWSWAFSecurityAutomations&templateURL=https://s3.amazonaws.com/solutions-reference/aws-waf-security-automations/v2.3.0/aws-waf-security-automations.template&param_ActivateHttpFloodProtectionParam=yes%20-%20AWS%20Lambda%20log%20parser&param_ActivateScannersProbesProtectionParam=yes%20-%20Amazon%20Athena%20log%20parser&param_EndpointType=ALB)|
 
 Step by step instructions:
-* Provide your stack with a unique name. *Note: Be careful not to exceed the 64-character stack name limit*
 * Provide the following template parameters:
-  * **Activate HTTP Flood Protection** = "yes - AWS Lambda log parser"
-  * **Activate Scanner & Probe Protection** = "yes - Amazon Athena log parser"
-  * **Endpoint Type** = "ALB"
   * **Application Access Log Bucket Name** (must be all lower case to match regex) = `<enter a random bucket name here>`
   * Leave all other parameters set to their default values.
-* Continue through the remaining pages using the default values.
-* On the final page, check the box at the bottom allowing AWS CloudFormation to create IAM resources with custom names.
+* Check the box at the bottom allowing AWS CloudFormation to create IAM resources with custom names.
 * Click the orange "Create stack" button at the bottom-right of the page to deploy the stack into your account.
  
 ## Deploy the sample Web App
