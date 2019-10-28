@@ -2,7 +2,7 @@
 
 In this step, you will deploy two CloudFormation templates required for the workshop.
 
-You will deploy the [WAF Security Automations Solution](https://aws.amazon.com/solutions/aws-waf-security-automations/) and a sample Web Application. The sample Web Application will be protected by the WAF.
+You will deploy the [WAF Security Automations Solution](https://aws.amazon.com/solutions/aws-waf-security-automations/) and a sample Web Application. The Sample Web Application template contains an EC2 instance containing the [OWASP Juice Shop](https://www2.owasp.org/www-project-juice-shop/). It is exposed by an Application Load Balancer. The sample Web Application will be protected by the WAF. The OWASP Juice Shop is an example web application containing many common vulnerabilities found in Web Applications.
 
 ## Deploy the WAF Security Automations Solution
 
