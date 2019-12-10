@@ -6,7 +6,6 @@ A workshop about [AWS WAF](https://aws.amazon.com/waf/) and the [WAF Security Au
 
 [![Build Status](https://travis-ci.org/aws-samples/aws-waf-workshop.svg?branch=master)](https://travis-ci.org/aws-samples/aws-waf-workshop)
 
-> Warning: This project is currently being developed and the code shouldn't be used in production.
 
 # Prerequisites
 
