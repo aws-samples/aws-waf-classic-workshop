@@ -1,5 +1,7 @@
 # AWS WAF workshop
 
+> :warning: **This workshop uses AWS WAF Classic**
+
 A workshop about [AWS WAF](https://aws.amazon.com/waf/) and the [WAF Security Automations Solution](https://aws.amazon.com/solutions/aws-waf-security-automations/)
 
 [![Build Status](https://travis-ci.org/aws-samples/aws-waf-workshop.svg?branch=master)](https://travis-ci.org/aws-samples/aws-waf-workshop)
