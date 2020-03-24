@@ -3,7 +3,7 @@ Description: set up a launch configuration and attach to ASG
 Metadata: {}
 Parameters:
   TheAmi:
-    Type: String
+    Type: AWS::EC2::Image::Id
   WebSecurityGroup:
     Type: String
   ALBSecurityGroup:
@@ -16,8 +16,6 @@ Parameters:
     Type: String
   TheWebPort:
     Type: Number
-Mappings: {}
-Conditions: {}
 Resources:
   TheRolePolicies:
     Type: AWS::IAM::Policy

@@ -14,7 +14,7 @@ The HTTP Flood log parser comes with some extensions points, they are:
 * Ignored Suffixes: requests accessing this type of resource will not count to request threshold. By default, this list is empty.
 * URI List: use this to define a custom request threshold and block period for specifics URLs. By default, this list is empty.
 
-The goal now is to apply customisations and check how it affects the log parser behavior. 
+The goal now is to apply customisations and check how it affects the log parser behavior.
 
 
 ### 2.1.2 Customising the HTTP Log Parser

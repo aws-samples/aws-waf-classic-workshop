@@ -1,5 +1,7 @@
 # AWS WAF workshop
 
+[![Build Status](https://travis-ci.org/aws-samples/aws-waf-classic-workshop.svg?branch=master)](https://travis-ci.org/aws-samples/aws-waf-classic-workshop)
+
 > :warning: **This workshop uses AWS WAF Classic**
 
 A workshop about [AWS WAF](https://aws.amazon.com/waf/) and the [WAF Security Automations Solution](https://aws.amazon.com/solutions/aws-waf-security-automations/)
@@ -9,7 +11,7 @@ A workshop about [AWS WAF](https://aws.amazon.com/waf/) and the [WAF Security Au
 
 This workshop introduces AWS WAF and the AWS WAF Security Automations solution.
 
-The AWS WAF enables customers to create rules to block common attack patterns, administered via APIs. 
+The AWS WAF enables customers to create rules to block common attack patterns, administered via APIs.
 The Security Automation Solution extends WAF by deploying a set of preconfigured rules to protect applications. These rules can be customised for your application.
 
 ## Learning Objectives
@@ -21,7 +23,7 @@ The Security Automation Solution extends WAF by deploying a set of preconfigured
 ## Prerequisites
 
 To complete this workshop you will require the following:
-* An AWS Account. 
+* An AWS Account.
     * If you don’t already have an AWS account, create one at <https://aws.amazon.com> by following the on-screen instructions
 * Your access to the AWS account must have IAM permissions to launch AWS CloudFormation templates that create IAM roles.
 

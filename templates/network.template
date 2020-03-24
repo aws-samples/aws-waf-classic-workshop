@@ -4,14 +4,16 @@ Metadata: {}
 Parameters:
   TheVpcRange:
     Type: String
+    AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
   TheSubnetRange:
     Type: String
+    AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
   TheOtherSubnetRange:
     Type: String
+    AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
   ThePublicIp:
     Type: String
-Mappings: {}
-Conditions: {}
+    AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
 Resources:
   TheVpc:
     Type: AWS::EC2::VPC
@@ -57,17 +59,11 @@ Resources:
         - Key: Name
           Value: !Sub '${AWS::StackName}-RouteTable'
   TheSubnetRouteTableAssociation:
-    DependsOn:
-      - TheRouteTable
-      - TheSubnet
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       RouteTableId: !Ref 'TheRouteTable'
       SubnetId: !Ref 'TheSubnet'
   TheOtherSubnetRouteTableAssociation:
-    DependsOn:
-      - TheRouteTable
-      - TheSubnet
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       RouteTableId: !Ref 'TheRouteTable'
@@ -84,9 +80,6 @@ Resources:
       InternetGatewayId: !Ref 'TheGateway'
       VpcId: !Ref 'TheVpc'
   TheRoute:
-    DependsOn:
-      - TheRouteTable
-      - TheGateway
     Type: AWS::EC2::Route
     Properties:
       DestinationCidrBlock: !Ref 'ThePublicIp'

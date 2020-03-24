@@ -27,7 +27,7 @@ SQL Injection and XSS are two common attacks. The AWS WAF Security Automation So
 
 Access the `site-url` endpoint and include bad signatures to the requests. You can use, for example:
 
-* SQL Injection: `<your-endpoint>/?username=1'%20or%20'1'%20=%20'1&password=1'%20or%20'1'%20=%20'1'`
+* SQL Injection: `<your-endpoint>/?username=1'%20or%20'1'%20=%20'1&password=1'%20or%20'1'%20=%20'1'` <!-- pragma: allowlist secret -->
 * XSS: `<your-endpoint>/?<SCRIPT>alert(“Cookie”+document.cookie)</SCRIPT>`
 
 Optional Extension - Try and find an input form on the juice site to perform a XSS attack. See if your WAF blocks the malicious request.
@@ -38,7 +38,7 @@ If you bypass the WAF by accessing the EC2 instance directly, you will see the a
 HTTP floods are a type of denial-of-service attack where an application receives a large volume of requests intended to exhaust the resources of an application, preventing it from handling requests from legitimate users.
 We will demonstrate functionality provided by the Security Automation Solution to detect this type of attack and block the responsible IP address in AWS WAF.
 
-Rather than execute an HTTP Flood attack on our sample application, we can simulate one by providing an example log file. This will be processed by the Security Automation Solution. 
+Rather than execute an HTTP Flood attack on our sample application, we can simulate one by providing an example log file. This will be processed by the Security Automation Solution.
 
 * Go to the CloudFormation Console, and inspect the WAF Automation stack's `Outputs` tab to find the value defined for `WafLogBucket`. Note this name. You will need it next.
 * Download [this file](files/waf-access-log-sample.gz) to your machine.
@@ -51,7 +51,7 @@ Rather than execute an HTTP Flood attack on our sample application, we can simul
     * To upload the file to the S3 bucket via the console, navigate to the [S3 Console page](https://s3.console.aws.amazon.com/s3/)
     * Select the bucket you noted in the previous step.
     * Select `upload`, then select the `waf-access-log-sample.gz` file.
-* The lambda function is triggered by the creation of a new file in the S3 Bucket. Wait a few seconds while the log parser function processes the new WAF log file. 
+* The lambda function is triggered by the creation of a new file in the S3 Bucket. Wait a few seconds while the log parser function processes the new WAF log file.
 * Check if the file `<stack_name>-waf_log_out.json` was added to the same bucket
 * Check the [AWS WAF console](https://console.aws.amazon.com/wafv2/home?#/webacls) (you may need to change the filter to WAF resources in your chosen region) to see if `HTTP Flood` rule contains any IP listed.
 

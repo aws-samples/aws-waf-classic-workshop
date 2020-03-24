@@ -8,6 +8,7 @@ before_script:
   - pip install -r requirements.txt
 
 script:
+  - cfn-lint templates/main.template
   - |
     if [ $TRAVIS_PULL_REQUEST == true ] && [ $TRAVIS_BRANCH != "master" ]; then
       VERSION="v$(cat templates/main.template | shyaml get-value Metadata.Version)"
@@ -15,6 +16,8 @@ script:
     fi
 
 before_deploy:
+  - mkdir -p ~/.aws
+  - cat >> ~/.aws/config <<<"[profile publisher]"$'\n'"credential_source=Environment"$'\n'"role_arn=${ROLE_ARN}"$'\n'"duration_seconds=900"
   - VERSION="v$(cat templates/main.template | shyaml get-value Metadata.Version)"
   - if [ -z "$TRAVIS_TAG" ]; then git tag $VERSION; fi
   - zip -r "$VERSION.zip" -@ < ci/include.lst
@@ -29,7 +32,7 @@ deploy:
       branch: master
       condition: type != pull_request
   - provider: script
-    script: aws s3 cp ./$VERSION.zip s3://$CFN_BUCKET/aws-waf-workshop/$VERSION/aws-waf-workshop.zip
+    script: aws s3 --profile publisher cp ./$VERSION.zip s3://$CFN_BUCKET/aws-waf-workshop/$VERSION/aws-waf-workshop.zip > /dev/null 2>&1
     skip_cleanup: true
     on:
       tags: true

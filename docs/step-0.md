@@ -4,7 +4,7 @@ In this step, you will deploy two CloudFormation templates required for the work
 
 You will deploy the [WAF Security Automations Solution](https://aws.amazon.com/solutions/aws-waf-security-automations/) and a sample Web Application. The Sample Web Application template contains an EC2 instance containing the [OWASP Juice Shop](https://www2.owasp.org/www-project-juice-shop/). It is exposed by an Application Load Balancer. The sample Web Application will be protected by the WAF. The OWASP Juice Shop is an example web application containing many common vulnerabilities found in Web Applications.
 
-> **Note**  
+> **Note**
 You are responsible for the cost of the AWS services used while running these CloudFormation stacks. There is no additional cost for using them. For full details, see the pricing pages for each AWS service you will be using in these CloudFormation stacks. Prices are subject to change.
 
 ## Deploy the WAF Security Automations Solution
@@ -23,7 +23,7 @@ Step by step instructions:
   * Leave all other parameters set to their default values.
 * Check the box at the bottom allowing AWS CloudFormation to create IAM resources with custom names.
 * Click the orange "Create stack" button at the bottom-right of the page to deploy the stack into your account.
- 
+
 ## Deploy the sample Web App
 
 |Region|Launch Template|
